@@ -11,27 +11,38 @@ from models import *
 
 class CommentAddTest(unittest.TestCase):
     
-    base_url = 'http://nsk.%s/' % os.getenv('SITE')
-    ARTSOURCE = '%sartifact/' % os.getenv('BUILD_URL')
-    driver = webdriver.Firefox()
+    #delete old screenshot artifacts
+    os.system('find -iname \*.png -delete')
 
-    comment_values = {'comment': 'AutoTest User Comment',
+    def setUp(self):
+
+        self.base_url = 'http://nsk.%s/' % os.getenv('SITE')
+        self.ARTSOURCE = '%sartifact/' % os.getenv('BUILD_URL')
+        self.driver = webdriver.Firefox()
+
+        self.comment_values = {'comment': 'AutoTest User Comment',
                    'admin_answer': 'AutoTest ContentManager AnswerFromAdmin',
                    'public_answer': 'AutoTest ContentManager AnswerFromPublicSide'
                    }
 
-    HOST = os.getenv('HOST')
-    PORT = os.getenv('PORT')
-    SCHEMA = os.getenv('SCHEMA')
-    USER = os.getenv('USER')
-    PSWD = os.getenv('PSWD')
+        self.HOST = os.getenv('HOST')
+        self.PORT = os.getenv('PORT')
+        self.SCHEMA = os.getenv('SCHEMA')
+        self.USER = os.getenv('USER')
+        self.PSWD = os.getenv('PSWD')
 
-    CONNECT_STRING = 'mysql://%s:%s@%s:%s/%s?charset=utf8' %(USER, PSWD, HOST, PORT, SCHEMA)
-    engine = create_engine(CONNECT_STRING, echo=False) #Значение False параметра echo убирает отладочную информацию
-    metadata = MetaData(engine)
-    session = create_session(bind = engine)
+        self.CONNECT_STRING = 'mysql://%s:%s@%s:%s/%s?charset=utf8' %(USER, PSWD, HOST, PORT, SCHEMA)
+        self.engine = create_engine(CONNECT_STRING, echo=False) #Значение False параметра echo убирает отладочную информацию
+        self.metadata = MetaData(engine)
+        self.session = create_session(bind = engine)
 
-    os.system('find -iname \*.png -delete')
+    def tearDown(self):
+        """Удаление переменных для всех тестов. Остановка приложения"""
+        
+        self.driver.close()
+        if sys.exc_info()[0]:
+            print
+            print sys.exc_info()[0]
 
     def is_element_present(self, how, what, timeout=10):
         """ Поиск элемента по локатору
@@ -71,13 +82,6 @@ class CommentAddTest(unittest.TestCase):
 	    print u'Скриншот страницы: ', self.ARTSOURCE + screen_name
 	    raise Exception('ElementNotPresent')
 
-    def tearDown(self):
-        """Удаление переменных для всех тестов. Остановка приложения"""
-        
-        self.driver.close()
-        if sys.exc_info()[0]:
-            print
-            print sys.exc_info()[0]
 
     def test_comment_add(self):
         driver = self.driver
