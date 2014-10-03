@@ -31,9 +31,9 @@ class CommentAddTest(unittest.TestCase):
         USER = os.getenv('USER')
         PSWD = os.getenv('PSWD')
 
-        self.CONNECT_STRING = 'mysql://%s:%s@%s:%s/%s?charset=utf8' %(USER, PSWD, HOST, PORT, SCHEMA)
-        self.engine = create_engine(CONNECT_STRING, echo=False) #Значение False параметра echo убирает отладочную информацию
-        self.metadata = MetaData(engine)
+        CONNECT_STRING = 'mysql://%s:%s@%s:%s/%s?charset=utf8' %(USER, PSWD, HOST, PORT, SCHEMA)
+        engine = create_engine(CONNECT_STRING, echo=False) #Значение False параметра echo убирает отладочную информацию
+        metadata = MetaData(engine)
         self.session = create_session(bind = engine)
 
     def tearDown(self):
