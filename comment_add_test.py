@@ -155,7 +155,8 @@ class CommentAddTest(unittest.TestCase):
         comment_answer_dialog.find_element_by_id('site_GoodsCommentAnswer_form_comment').send_keys(comment_values['public_answer'])
         comment_answer_dialog.find_element_by_class_name('submitButton').click()
 
-        #ждем пока страница перезагрузится и появится ответ на отзыв из карточки товара
+        #обновляем страницу и смотрим появится ли ответ на отзыв из карточки товара
+        driver.refresh()
         comment = element(By.CSS_SELECTOR, '#tabTarget7 div:first-child')#обновляем данные, в кеше нет свежего отзыва
 
         #проверяем ответ на комментарий пользователя из карточки товара
