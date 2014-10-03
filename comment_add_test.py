@@ -10,15 +10,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from models import *
 
 class CommentAddTest(unittest.TestCase):
-    
-    #delete old screenshot artifacts
-    os.system('find -iname \*.png -delete')
 
     def setUp(self):
 
+        #delete old screenshot artifacts
+        os.system('find -iname \*.png -delete')
         self.base_url = 'http://nsk.%s/' % os.getenv('SITE')
         self.ARTSOURCE = '%sartifact/' % os.getenv('BUILD_URL')
         self.driver = webdriver.Firefox()
+        self.driver.implicitly_wait(15)
 
         self.comment_values = {'comment': 'AutoTest User Comment',
                    'admin_answer': 'AutoTest ContentManager AnswerFromAdmin',
@@ -90,10 +90,9 @@ class CommentAddTest(unittest.TestCase):
         cnt=0
         
         driver.get('%slogin' % self.base_url)
-        element(By.ID, 'username', 5).send_keys(os.getenv('AUTH'))
-        element(By.ID, 'password', 5).send_keys(os.getenv('AUTHPASS'))
+        element(By.ID, 'username').send_keys(os.getenv('AUTH'))
+        element(By.ID, 'password').send_keys(os.getenv('AUTHPASS'))
         element(By.CLASS_NAME, 'btn-primary').click()
-        time.sleep(5)
 
         #получения алиаса и id из БД
         good = self.session.query(Goods).\
@@ -157,7 +156,6 @@ class CommentAddTest(unittest.TestCase):
         comment_answer_dialog.find_element_by_class_name('submitButton').click()
 
         #ждем пока страница перезагрузится и появится ответ на отзыв из карточки товара
-        time.sleep(10)
         comment = element(By.CSS_SELECTOR, '#tabTarget7 div:first-child')#обновляем данные, в кеше нет свежего отзыва
 
         #проверяем ответ на комментарий пользователя из карточки товара
