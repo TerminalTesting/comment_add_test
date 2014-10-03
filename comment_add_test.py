@@ -25,11 +25,11 @@ class CommentAddTest(unittest.TestCase):
                    'public_answer': 'AutoTest ContentManager AnswerFromPublicSide'
                    }
 
-        self.HOST = os.getenv('HOST')
-        self.PORT = os.getenv('PORT')
-        self.SCHEMA = os.getenv('SCHEMA')
-        self.USER = os.getenv('USER')
-        self.PSWD = os.getenv('PSWD')
+        HOST = os.getenv('HOST')
+        PORT = os.getenv('PORT')
+        SCHEMA = os.getenv('SCHEMA')
+        USER = os.getenv('USER')
+        PSWD = os.getenv('PSWD')
 
         self.CONNECT_STRING = 'mysql://%s:%s@%s:%s/%s?charset=utf8' %(USER, PSWD, HOST, PORT, SCHEMA)
         self.engine = create_engine(CONNECT_STRING, echo=False) #Значение False параметра echo убирает отладочную информацию
