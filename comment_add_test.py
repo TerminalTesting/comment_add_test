@@ -93,6 +93,7 @@ class CommentAddTest(unittest.TestCase):
         element(By.ID, 'username').send_keys(os.getenv('AUTH'))
         element(By.ID, 'password').send_keys(os.getenv('AUTHPASS'))
         element(By.CLASS_NAME, 'btn-primary').click()
+        time.sleep(7)
 
         #получения алиаса и id из БД
         good = self.session.query(Goods).\
